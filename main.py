@@ -14,11 +14,11 @@ app.add_middleware(
 
 host_server = ""
 
-@app.get('/register')
-async def register(request: Request):
+@app.post('/register')
+async def register(inadr:str, request: Request):
     global host_server
-    
-    host_server = request.client.host
+
+    host_server = inadr
     return {"address": request.client.host}
 
 @app.get('/find')

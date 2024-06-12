@@ -16,7 +16,10 @@ host_server = ""
 
 @app.get('/register')
 async def register(request: Request):
-    return {"req": json.dumps(request)}
+    global host_server
+    
+    host_server = request.client.host
+    return {"address": request.client.host}
 
 @app.get('/find')
 async def find():

@@ -27,7 +27,7 @@ app.add_middleware(
 )
 
 @app.post('/register')
-async def register(inadr:str, request: Request):
+async def register(request: Request, inadr: str):
     request.app.state.data['host'] = inadr
     return {"address": request.app.state.data['host']}
 

@@ -16,7 +16,11 @@ host_server = ""
 
 @app.get('/register')
 async def register(request: Request):
-    return json.dumps(request)
+    return {"req": json.dumps(request)}
+
+@app.get('/find')
+async def find():
+    return {"address": host_server}
 
 @app.get('/')
 async def root():

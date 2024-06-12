@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+import json
 
 app = FastAPI()
 
@@ -16,8 +16,7 @@ host_server = ""
 
 @app.get('/register')
 async def register(request: Request):
-    print(request)
-    return {}
+    return json.dumps(request)
 
 @app.get('/')
 async def root():

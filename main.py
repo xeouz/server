@@ -1,8 +1,22 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-import json
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    ''' Run at startup
+        Initialise the Client and add it to app.state
+    '''
+    app.state.data = {}
+    yield
+    ''' Run on shutdown
+        Close the connection
+        Clear variables and release the resources
+    '''
+    app.state.data = {}
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -12,18 +26,14 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-host_server = ""
-
 @app.post('/register')
 async def register(inadr:str, request: Request):
-    global host_server
-
-    host_server = inadr
-    return {"address": request.client.host}
+    request.app.state.data['host'] = inadr
+    return {"address": request.app.state.data['host']}
 
 @app.get('/find')
-async def find():
-    return {"address": host_server}
+async def find(request: Request):
+    return {"address": request.app.state.data['host']}
 
 @app.get('/')
 async def root():

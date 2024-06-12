@@ -14,13 +14,11 @@ app.add_middleware(
 
 host_server = ""
 
-@app.post('/register')
-def register(request: Request):
+@app.get('/register')
+async def register(request: Request):
     print(request)
     return {}
 
-@app.get('/test')
-def test():
+@app.get('/')
+async def root():
     return "hello"
-
-uvicorn.run(app, port=6900)
